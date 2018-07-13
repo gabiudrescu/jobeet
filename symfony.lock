@@ -17,6 +17,9 @@
     "doctrine/common": {
         "version": "v2.9.0"
     },
+    "doctrine/data-fixtures": {
+        "version": "v1.3.1"
+    },
     "doctrine/dbal": {
         "version": "v2.8.0"
     },
@@ -91,6 +94,15 @@
     },
     "fzaninotto/faker": {
         "version": "v1.8.0"
+    },
+    "hautelook/alice-bundle": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.4",
+            "ref": "3447d538661064626c782b1122a14defa48dc0b1"
+        }
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"

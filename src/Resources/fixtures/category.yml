@@ -1,0 +1,9 @@
+App\Entity\Category:
+    category_1:
+        name: 'Design'
+    category_2:
+        name: 'Programming'
+    category_3:
+        name: 'Manager'
+    category_4:
+        name: 'Administrator'
