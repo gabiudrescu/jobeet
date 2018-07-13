@@ -4,7 +4,5 @@
 
 {% block main %}
     {% import 'jobs/macro/list.html.twig' as jobList %}
-    {% for category in categories %}
-        {{ jobList.render(category, category.jobs) }}
-    {% endfor %}
+    {{ jobList.render(category, category.jobs) }}
 {% endblock %}
