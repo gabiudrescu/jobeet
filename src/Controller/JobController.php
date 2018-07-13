@@ -16,16 +16,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class JobController extends Controller
 {
     /**
-     * @Route("/job", name="job")
+     * @Route("/{category}", name="job_category", requirements={"category" = "\d+"})
+     * @ParamConverter()
+     * @Method("GET")
      */
-    public function index()
+    public function index(Category $category)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $categories = $em->getRepository(Category::class)->findAll();
-
         return $this->render('job/index.html.twig', [
-            'categories' => $categories,
+            'category' => $category,
         ]);
     }
 
