@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
@@ -118,10 +119,6 @@ class Job
     public function __construct()
     {
         $this->token = uniqid();
-
-        $in30Days = new \DateTime();
-        $in30Days->add(new \DateInterval('P30D'));
-        $this->expiresAt = $in30Days;
     }
 
     public function __toString()
@@ -344,5 +341,35 @@ class Job
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+
+    public function getCompanySlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getCompany());
+    }
+
+    public function getPositionSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getPosition());
+    }
+
+    public function getLocationSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getLocation());
+    }
+
+    /**
+    * @ORM\PrePersist
+    */
+    public function setExpiresAtValue()
+    {
+        if (!$this->getExpiresAt()) {
+            $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
+            $this->expiresAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
+        }
     }
 }
