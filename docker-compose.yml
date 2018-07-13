@@ -30,7 +30,7 @@ services:
       - 8.8.4.4
 
   mysql:
-    container_name: mysql
+    container_name: jobeet_mysql
     image: mysql:5.7
     ports:
       - "3306:3306"
