@@ -103,7 +103,7 @@ class Job
         $this->token = uniqid();
 
         $in30Days = new \DateTime();
-        $in30Days->sub(new \DateInterval('P30D'));
+        $in30Days->add(new \DateInterval('P30D'));
         $this->expiresAt = $in30Days;
     }
 
