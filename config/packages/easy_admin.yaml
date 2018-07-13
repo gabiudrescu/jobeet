@@ -1,5 +1,24 @@
 easy_admin:
     entities:
-        - App\Entity\Job
-        - App\Entity\Category
-        - App\Entity\Affiliate
+      Job:
+        class: App\Entity\Job
+        form:
+          fields:
+              - 'category'
+              - { property: 'type', type: 'choice', type_options: {choices: {'Full time': 'full-time', 'Part time': 'part-time', 'Freelance': 'freelance'}}}
+              - 'company'
+              - 'logo'
+              - 'url'
+              - 'position'
+              - 'location'
+              - 'description'
+              - 'howToApply'
+              - 'token'
+              - 'email'
+              - 'expiresAt'
+              - 'createdAt'
+              - 'updatedAt'
+      Category:
+        class: App\Entity\Category
+      Affiliate:
+        class: App\Entity\Affiliate
