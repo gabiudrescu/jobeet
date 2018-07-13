@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Job;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class JobController extends Controller
 {
@@ -24,13 +25,10 @@ class JobController extends Controller
 
     /**
      * @Route("/job/{id}", name="job_show")
+     * @ParamConverter()
      */
-    public function show(int $id)
+    public function show(Job $job)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $job = $em->getRepository(Job::class)->find($id);
-
         return $this->render('job/show.html.twig', [
             'job' => $job,
         ]);
