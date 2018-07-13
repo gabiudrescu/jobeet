@@ -107,6 +107,11 @@ class Job
         $this->expiresAt = $in30Days;
     }
 
+    public function __toString()
+    {
+        return sprintf('%s - %s (RefId: %s)', $this->getCompany(), $this->getPosition(), $this->id);
+    }
+
     public function getId()
     {
         return $this->id;
