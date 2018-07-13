@@ -4,8 +4,8 @@ Make sure you copy the file ```docker/.env.dist``` to ```docker/.env``` and set 
 
 ## Run docker compose
 
-```docker-composer up -d```
+```docker-compose up -d```
 
 ## Connect to app container
 
-```docker-composer exec --user application app bash```
+```docker-compose exec --user application app bash```
