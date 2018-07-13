@@ -24,8 +24,7 @@
         "symfony/validator": "^4.1",
         "symfony/web-link": "^4.1",
         "symfony/webpack-encore-pack": "*",
-        "symfony/yaml": "^4.1",
-        "theofidry/alice-data-fixtures": "^1.0"
+        "symfony/yaml": "^4.1"
     },
     "require-dev": {
         "doctrine/data-fixtures": "^1.3",
@@ -34,7 +33,8 @@
         "symfony/dotenv": "^4.1",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "^4.1"
+        "symfony/web-server-bundle": "^4.1",
+        "theofidry/alice-data-fixtures": "^1.0"
     },
     "config": {
         "preferred-install": {
