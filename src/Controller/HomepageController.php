@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\Job;
@@ -13,11 +14,13 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
+        /**
+         * @var Category[] $categories
+         */
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findCategoriesWithJobsForHomepage();
 
         return $this->render('homepage/index.html.twig', [
-            'category' => $jobs[0]->getCategory(),
-            'jobs' => $jobs,
+            'categories' => $categories
         ]);
     }
 }
