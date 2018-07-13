@@ -5,7 +5,7 @@ easy_admin:
         form:
           fields:
               - 'category'
-              - 'type'
+              - { property: 'type', type: 'choice', type_options: {choices: {'Full time': 'full-time', 'Part time': 'part-time', 'Freelance': 'freelance'}}}
               - 'company'
               - 'logo'
               - 'url'
