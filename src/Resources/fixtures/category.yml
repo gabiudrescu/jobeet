@@ -1,9 +1,13 @@
 App\Entity\Category:
     category_1:
         name: 'Design'
+        description: <paragraphs(2, true)>
     category_2:
         name: 'Programming'
+        description: <paragraphs(2, true)>
     category_3:
         name: 'Manager'
+        description: <paragraphs(2, true)>
     category_4:
         name: 'Administrator'
+        description: <paragraphs(2, true)>

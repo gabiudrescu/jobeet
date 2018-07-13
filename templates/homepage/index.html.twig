@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'jobeet.homepage.title'|trans }}{% endblock %}
+
+{% block main %}
+    {% import 'jobs/macro/list.html.twig' as jobList %}
+    {{ jobList.render(category, jobs) }}
+{% endblock %}
