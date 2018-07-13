@@ -24,7 +24,7 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/job/{id}", name="job_show")
+     * @Route("/job/{company}/{location}/{id}/{position}", name="job_show")
      * @ParamConverter()
      */
     public function show(Job $job)

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
@@ -344,5 +345,24 @@ class Job
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+
+    public function getCompanySlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getCompany());
+    }
+
+    public function getPositionSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getPosition());
+    }
+
+    public function getLocationSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getLocation());
     }
 }
