@@ -97,6 +97,18 @@ class Job
      */
     private $updatedAt;
 
+    public function __construct()
+    {
+        $this->token = uniqid();
+
+        $in30Days = new \DateTime();
+        $in30Days->sub(new \DateInterval('P30D'));
+        $this->expiresAt = $in30Days;
+
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
     public function getId()
     {
         return $this->id;
