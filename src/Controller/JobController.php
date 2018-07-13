@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Job;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +18,10 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $jobs = $em->getRepository(Job::class)->findAll();
+        $categories = $em->getRepository(Category::class)->findAll();
 
         return $this->render('job/index.html.twig', [
-            'jobs' => $jobs,
+            'categories' => $categories,
         ]);
     }
 
