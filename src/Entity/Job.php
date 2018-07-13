@@ -119,10 +119,6 @@ class Job
     public function __construct()
     {
         $this->token = uniqid();
-
-        $in30Days = new \DateTime();
-        $in30Days->add(new \DateInterval('P30D'));
-        $this->expiresAt = $in30Days;
     }
 
     public function __toString()
@@ -364,5 +360,16 @@ class Job
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getLocation());
+    }
+
+    /**
+    * @ORM\PrePersist
+    */
+    public function setExpiresAtValue()
+    {
+        if (!$this->getExpiresAt()) {
+            $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
+            $this->expiresAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
+        }
     }
 }
