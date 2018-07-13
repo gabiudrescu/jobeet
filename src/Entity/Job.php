@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Job
 {
@@ -38,8 +41,7 @@ class Job
     private $company;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255)
      */
     private $logo;
 
@@ -80,16 +82,14 @@ class Job
     private $token;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $isPublic;
+    private $public = false;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank()
      */
-    private $isActivated;
+    private $activated = false;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -99,19 +99,16 @@ class Job
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
      */
     private $expiresAt;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
      */
     private $updatedAt;
 
@@ -265,26 +262,26 @@ class Job
         return $this;
     }
 
-    public function getIsPublic(): ?bool
+    public function isPublic(): ?bool
     {
-        return $this->isPublic;
+        return $this->public;
     }
 
-    public function setIsPublic(?bool $isPublic): self
+    public function setPublic(?bool $public): self
     {
-        $this->isPublic = $isPublic;
+        $this->public = $public;
 
         return $this;
     }
 
-    public function getIsActivated(): ?bool
+    public function isActivated(): ?bool
     {
-        return $this->isActivated;
+        return $this->activated;
     }
 
-    public function setIsActivated(bool $isActivated): self
+    public function setActivated(bool $activated): self
     {
-        $this->isActivated = $isActivated;
+        $this->activated = $activated;
 
         return $this;
     }
@@ -402,5 +399,26 @@ class Job
         $this->locationSlug = $locationSlug;
 
         return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="logo", fileNameProperty="logo")
+     * @var File
+     */
+    private $logoFile;
+
+    public function setLogoFile(?File $logoFile = null):  void
+    {
+        $this->logoFile = $logoFile;
+
+        if(null !== $logoFile)
+        {
+            $this->setUpdatedAtValue();
+        }
+    }
+
+    public function getLogoFile(): ?File
+    {
+        return $this->logoFile;
     }
 }

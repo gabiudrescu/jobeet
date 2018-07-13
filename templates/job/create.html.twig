@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'jobeet.job.create.title'|trans }}{% endblock %}
+
+{% block main %}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

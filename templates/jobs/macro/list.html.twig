@@ -17,9 +17,9 @@
                     {% for job in jobs %}
                         <div class="col-md-4">
                             <div class="card mb-4 box-shadow">
-                                <img class="card-img-top" src="{{ job.logo }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{ job.logo|displayLogoPath }}" alt="Card image cap">
                                 <div class="card-body">
-                                    {{ job.description|truncate(100, true) }}
+                                    {{ job.description|striptags|truncate(100, true) }}
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="{{ path('job_show', { 'id': job.id, 'company': job.companySlug, 'location': job.locationSlug, 'position': job.positionSlug }) }}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
