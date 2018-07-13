@@ -14,7 +14,7 @@
         {% if job.logo %}
             <div class="logo">
                 <a href="{{ job.url }}">
-                    <img src="{{ '/images/logo/'~job.logo }}"
+                    <img src="{{ job.logo|displayLogoPath }}"
                          alt="{{ job.company }} logo" width="200px" />
                 </a>
             </div>

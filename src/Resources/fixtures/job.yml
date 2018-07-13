@@ -9,6 +9,6 @@ App\Entity\Job:
         location: <Address()>
         description: <paragraphs(4, true)>
         how_to_apply: <paragraphs(2, true)>
-        is_public: true
-        is_activated: true
+        public: true
+        activated: true
         email: <email()>
