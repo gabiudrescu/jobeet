@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
@@ -115,6 +114,21 @@ class Job
      * @Assert\NotBlank()
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $companySlug;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $positionSlug;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $locationSlug;
 
     public function __construct()
     {
@@ -343,25 +357,6 @@ class Job
         return $this;
     }
 
-
-    public function getCompanySlug()
-    {
-        $slugify = new Slugify();
-        return $slugify->slugify($this->getCompany());
-    }
-
-    public function getPositionSlug()
-    {
-        $slugify = new Slugify();
-        return $slugify->slugify($this->getPosition());
-    }
-
-    public function getLocationSlug()
-    {
-        $slugify = new Slugify();
-        return $slugify->slugify($this->getLocation());
-    }
-
     /**
     * @ORM\PrePersist
     */
@@ -371,5 +366,41 @@ class Job
             $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
             $this->expiresAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
         }
+    }
+
+    public function setCompanySlug(string $companySlug): self
+    {
+        $this->companySlug = $companySlug;
+
+        return $this;
+    }
+
+    public function getCompanySlug(): ?string
+    {
+        return $this->companySlug;
+    }
+
+    public function setPositionSlug(string $positionSlug): self
+    {
+        $this->positionSlug = $positionSlug;
+
+        return $this;
+    }
+
+    public function getPositionSlug(): ?string
+    {
+        return $this->positionSlug;
+    }
+
+    public function getLocationSlug(): ?string
+    {
+        return $this->locationSlug;
+    }
+
+    public function setLocationSlug(string $locationSlug): self
+    {
+        $this->locationSlug = $locationSlug;
+
+        return $this;
     }
 }

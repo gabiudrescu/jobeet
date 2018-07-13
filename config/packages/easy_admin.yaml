@@ -1,5 +1,24 @@
 easy_admin:
     entities:
-        - App\Entity\Job
-        - App\Entity\Category
-        - App\Entity\Affiliate
+      Job:
+        class: App\Entity\Job
+        form:
+          fields:
+              - 'category'
+              - 'type'
+              - 'company'
+              - 'logo'
+              - 'url'
+              - 'position'
+              - 'location'
+              - 'description'
+              - 'howToApply'
+              - 'token'
+              - 'email'
+              - 'expiresAt'
+              - 'createdAt'
+              - 'updatedAt'
+      Category:
+        class: App\Entity\Category
+      Affiliate:
+        class: App\Entity\Affiliate
