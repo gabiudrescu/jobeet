@@ -21,4 +21,18 @@ class JobController extends Controller
             'jobs' => $jobs,
         ]);
     }
+
+    /**
+     * @Route("/job/{id}", name="job_show")
+     */
+    public function show(int $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $job = $em->getRepository(Job::class)->find($id);
+
+        return $this->render('job/show.html.twig', [
+            'job' => $job,
+        ]);
+    }
 }
