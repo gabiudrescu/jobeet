@@ -119,9 +119,6 @@
     "jms/metadata": {
         "version": "1.6.0"
     },
-    "lexik/translation-bundle": {
-        "version": "v4.0.11"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
     },

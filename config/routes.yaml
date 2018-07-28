@@ -1,6 +1,0 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-lexik_translation_edition:
-    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
-    prefix:   /lexik

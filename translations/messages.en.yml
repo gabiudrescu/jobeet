@@ -4,3 +4,6 @@ jobeet.header.description: __jobeet.header.description
 jobeet.header.title: Jobeet
 jobeet.job.list.title: __jobeet.job.list.title
 jobeet.job.create.title: __jobeet.job.create.title
+jobeet.job.expire_in: "This job expires"
+jobeet.job.expires_at: "This job expired at"
+

@@ -48,3 +48,5 @@ services:
         - ~/.composer:/var/www/.composer
         - ~/.gitconfig:/var/www/.gitconfig
         - ~/.ssh:/var/www/.ssh
+        - "/etc/timezone:/etc/timezone:ro"
+        - "/etc/localtime:/etc/localtime:ro"

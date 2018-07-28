@@ -2,6 +2,11 @@ easy_admin:
     entities:
       Job:
         class: App\Entity\Job
+        list:
+          fields:
+            - id
+            - position
+            - expiresAt
         form:
           fields:
               - 'category'
