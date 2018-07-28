@@ -70,7 +70,10 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "bin/console doctrine:database:create --if-not-exists",
+            "bin/console doctrine:migrations:migrate",
+            "bin/console hautelook:fixtures:load -n"
         ],
         "post-update-cmd": [
             "@auto-scripts"
