@@ -9,7 +9,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
- * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
 class Job
@@ -322,26 +321,6 @@ class Job
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        if(!$this->getCreatedAt())
-        {
-            $this->createdAt = new \DateTime();
-        }
-    }
-
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
-    public function setUpdatedAtValue()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -352,17 +331,6 @@ class Job
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    /**
-    * @ORM\PrePersist
-    */
-    public function setExpiresAtValue()
-    {
-        if (!$this->getExpiresAt()) {
-            $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
-            $this->expiresAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
-        }
     }
 
     public function setCompanySlug(string $companySlug): self
@@ -413,7 +381,7 @@ class Job
 
         if(null !== $logoFile)
         {
-            $this->setUpdatedAtValue();
+            $this->setUpdatedAt(new \DateTime());
         }
     }
 

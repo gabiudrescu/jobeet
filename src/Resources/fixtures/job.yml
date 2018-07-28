@@ -12,3 +12,4 @@ App\Entity\Job:
         public: true
         activated: true
         email: <email()>
+        expires_at: <dateTimeBetween('+1 days', '+30 days')>
