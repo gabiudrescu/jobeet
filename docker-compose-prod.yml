@@ -3,7 +3,9 @@ version: '3'
 services:
   app:
     container_name: jobeet_app
-    build: ./docker/app
+    build:
+      context: ./docker/app
+      dockerfile: ./Dockerfile_prod
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
@@ -17,8 +19,6 @@ services:
       - redis
     ports:
       - "80:80"
-      - "443:443"
-      - "9001:9000"
     env_file: ./docker/.env
     networks:
       default:
@@ -32,8 +32,6 @@ services:
   mysql:
     container_name: jobeet_mysql
     image: mysql:5.7
-    ports:
-      - "3306:3306"
     volumes:
       - jobeet-data:/var/lib/mysql
     env_file: ./docker/.env
@@ -41,8 +39,6 @@ services:
   redis:
     container_name: jobeet_redis
     image: redis
-    ports:
-      - "6379:6379"
     env_file: ./docker/.env
 
   rabbitmq:
@@ -50,14 +46,12 @@ services:
     build: ./docker/rabbitmq
     ports:
       - "15672:15672"
-      - "5672:5672"
     env_file: ./docker/.env
 
   mailhog:
     container_name: jobeet_mailhog
     image: mailhog/mailhog
     ports:
-      - "1025:1025"
       - "8025:8025"
     env_file: ./docker/.env
 
