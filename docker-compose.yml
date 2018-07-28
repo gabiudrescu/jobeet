@@ -1,77 +1,50 @@
-version: '3'
-
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
 services:
-  app:
-    container_name: jobeet_app
-    build: ./docker/app
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html
-      - ~/.ssh:/home/application/.ssh
-      - ~/.gitconfig:/home/application/.gitconfig
-      - ~/.composer:/home/application/.composer
-    links:
-      - mysql
-      - mailhog
-      - rabbitmq
-      - redis
-    ports:
-      - "80:80"
-      - "443:443"
-      - "9001:9000"
-    env_file: ./docker/.env
-    networks:
-      default:
-        aliases:
-          - jobeet.localhost
-      jobeet-app: ~
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
 
-  mysql:
-    container_name: jobeet_mysql
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    volumes:
-      - jobeet-data:/var/lib/mysql
-    env_file: ./docker/.env
+    mailhog:
+      image: mailhog/mailhog:latest
+      container_name: jobeet-mailhog
+      ports:
+        - "8001:8025"
 
-  redis:
-    container_name: jobeet_redis
-    image: redis
-    ports:
-      - "6379:6379"
-    env_file: ./docker/.env
+    redis:
+      image: redis:alpine
+      container_name: jobeet-redis
 
-  rabbitmq:
-    container_name: jobeet_rabbitmq
-    build: ./docker/rabbitmq
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    env_file: ./docker/.env
+    mysql:
+      image: mysql:5.7
+      container_name: jobeet-mysql
+      working_dir: /application
+      volumes:
+        - .:/application
+      environment:
+        - MYSQL_ROOT_PASSWORD=docker
+        - MYSQL_DATABASE=jobeet
+        - MYSQL_USER=jobeet
+        - MYSQL_PASSWORD=jobeet
+      ports:
+        - "8002:3306"
 
-  mailhog:
-    container_name: jobeet_mailhog
-    image: mailhog/mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
-    env_file: ./docker/.env
+    webserver:
+      image: nginx:alpine
+      container_name: jobeet-webserver
+      working_dir: /application
+      volumes:
+          - .:/application
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "8000:80"
 
-  phpmyadmin:
-    container_name: jobeet_pma
-    image: phpmyadmin/phpmyadmin
-    links:
-      - "mysql:db"
-    ports:
-      - "8080:80"
-    env_file: ./docker/.env
-
-volumes:
-  jobeet-data:
-
-networks:
-  jobeet-app: ~
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: jobeet-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+        - ~/.composer:/var/www/.composer
+        - ~/.gitconfig:/var/www/.gitconfig
+        - ~/.ssh:/var/www/.ssh
