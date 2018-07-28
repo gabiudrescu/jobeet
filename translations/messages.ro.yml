@@ -4,4 +4,5 @@ jobeet.header.description: __jobeet.header.description
 jobeet.header.title: Jobeet
 jobeet.job.list.title: __jobeet.job.list.title
 jobeet.job.create.title: __jobeet.job.create.title
-jobeet.job.expire_in: "{1} This job expires today|]1,Inf[ This job will expire in %count% days"
+jobeet.job.expire_in: 'Acest job expira'
+jobeet.job.expires_at: 'Acest job a expirat'

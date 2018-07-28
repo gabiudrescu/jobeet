@@ -23,7 +23,8 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c, j')
-            ->join('c.jobs', 'j')
+            ->join('c.jobs', 'j', 'with', 'j.expiresAt > :now')
+            ->setParameter('now', new \DateTime('now'))
             ->getQuery()
             ->getResult()
         ;

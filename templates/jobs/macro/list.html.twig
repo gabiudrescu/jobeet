@@ -28,10 +28,7 @@
                                     </div>
                                     <hr>
                                     <div class="alert alert-secondary" role="alert">
-
-                                        {# based on this idea: https://craftcms.stackexchange.com/questions/424/is-it-possible-to-compose-a-datetime-object-from-a-string #}
-
-                                        {{ 'jobeet.job.expire_in'|transchoice(date(job.expiresAt|date).diff(date("now")).days) }}
+                                        {{ job.expiresAt > date() ? 'jobeet.job.expire_in'|trans : 'jobeet.job.expires_at'|trans }} {{ job.expiresAt | time_diff }}
                                     </div>
                                 </div>
                             </div>
