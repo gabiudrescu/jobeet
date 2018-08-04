@@ -3,9 +3,10 @@
 {% block title %}{{ 'jobeet.homepage.title'|trans }}{% endblock %}
 
 {% block main %}
-    {% import 'jobs/macro/list.html.twig' as jobList %}
+    {% import 'job/macro/list.html.twig' as jobList %}
 
     {% for category in categories %}
-        {{ jobList.render(category, category.jobs) }}
+        {{ jobList.renderCategory(category) }}
+        {{ jobList.renderList(category.jobs) }}
     {% endfor %}
 {% endblock %}

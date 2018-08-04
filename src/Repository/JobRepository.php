@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Job;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -27,10 +28,33 @@ class JobRepository extends AbstractRepository
             ->setParameter('category', $category)
         ;
 
-        $qb->andWhere('j.expiresAt > :now')
-            ->setParameter('now', new \DateTime('now'))
-        ;
+        $this->setActiveJobs($qb);
 
         return $this->getPaginator($qb);
+    }
+    
+    public function createPaginatorForSearch(string $query)
+    {
+        $qb = $this->createQueryBuilder('j');
+
+        $qb->where("j.company like :query")
+            ->orWhere("j.description like :query")
+            ->orWhere("j.location like :query")
+            ->orWhere("j.howToApply like :query")
+            ->orWhere("j.position like :query")
+        ;
+
+        $qb->setParameter('query', "%" . $query . "%");
+
+        $this->setActiveJobs($qb);
+
+        return $this->getPaginator($qb);
+    }
+
+    private function setActiveJobs(QueryBuilder $builder)
+    {
+        $builder->andWhere('j.expiresAt > :now')
+            ->setParameter('now', new \DateTime('now'))
+        ;
     }
 }

@@ -1,4 +1,6 @@
-{% macro render(category, jobs) %}
+{% import _self as list %}
+
+{% macro renderCategory(category) %}
     {% block jumbotron %}
         <section class="jumbotron text-center">
             <div class="container">
@@ -14,7 +16,9 @@
             </div>
         </section>
     {% endblock %}
+{% endmacro %}
 
+{% macro renderList(jobs) %}
     {% block row %}
         <div class="album py-5 bg-light">
             <div class="container">

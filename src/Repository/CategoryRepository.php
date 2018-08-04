@@ -34,6 +34,7 @@ class CategoryRepository extends ServiceEntityRepository
             ->join('c.jobs', 'j', 'with', 'j.expiresAt > :now')
             ->setParameter('now', new \DateTime('now'))
             ->getQuery()
+            ->getResult()
         ;
     }
 }

@@ -3,9 +3,15 @@
 {% block title %}{{ 'jobeet.job.list.title'|trans }}{% endblock %}
 
 {% block main %}
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h2>{{ 'jobeet.job.search.header'|trans({'%query%' : query}) }}</h2>
+        </div>
+    </section>
+
     {% import 'job/macro/list.html.twig' as jobList %}
 
-    {{ jobList.renderCategory(category) }}
     {{ jobList.renderList(jobs) }}
 
     <div class="d-flex justify-content-center">

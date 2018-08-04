@@ -14,9 +14,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Webmozart\Assert\Assert;
 
 class JobController extends Controller
 {
@@ -92,6 +94,30 @@ class JobController extends Controller
 
         return $this->render('job/create.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="job_search")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function search(Request $request)
+    {
+        /**
+         * @var string $query
+         */
+        $query = $request->get('q');
+
+        Assert::notNull($query);
+
+        $jobs = $this->jobRepository->createPaginatorForSearch($query);
+
+        return $this->render('job/search.html.twig', [
+            'query' => $query,
+            'jobs' => $jobs
         ]);
     }
 
