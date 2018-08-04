@@ -1,0 +1,11 @@
+mjml:
+    bin: '%kernel.project_dir%/node_modules/.bin/mjml' # default:  mjml
+    mimify: true
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+
+    NotFloran\MjmlBundle\SwiftMailer\MjmlPlugin:
+        tags: [swiftmailer.default.plugin]

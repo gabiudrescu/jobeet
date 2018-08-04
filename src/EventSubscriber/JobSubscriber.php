@@ -3,12 +3,22 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Job;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class JobSubscriber implements EventSubscriber
 {
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        if(!($job = $this->retrieveJob($args)))
+        {
+            return;
+        }
+
+        $this->setExpiresAt($job);
+        $this->setHash($job);
+    }
+
     /**
      * @param LifecycleEventArgs $args
      *
@@ -26,14 +36,9 @@ class JobSubscriber implements EventSubscriber
         return false;
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    private function setHash(Job $job)
     {
-        if(!($job = $this->retrieveJob($args)))
-        {
-            return;
-        }
-
-        $this->setExpiresAt($job);
+        $job->setHash(base64_encode(random_bytes(50)));
     }
 
     private function setExpiresAt(Job $job)

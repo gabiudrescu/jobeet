@@ -6,6 +6,8 @@ easy_admin:
           fields:
             - id
             - position
+            - activated
+            - token
             - expiresAt
         form:
           fields:

@@ -38,10 +38,16 @@ services:
       ports:
        - "8000:80"
 
-    php-fpm:
+    php-fpm-node:
       build: phpdocker/php-fpm
       container_name: jobeet-php-fpm
       working_dir: /application
+      environment:
+        - MAILER_URL=smtp://jobeet-mailhog:1025
+        - DATABASE_URL=mysql://jobeet:jobeet@jobeet-mysql:3306/jobeet
+        - APP_ENV=dev
+        - LOCALE=ro
+        - APP_SECRET=2f506fc1c8fa44b9b34642d0fd46ebbf
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini

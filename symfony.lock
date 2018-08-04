@@ -140,6 +140,9 @@
     "nikic/php-parser": {
         "version": "v4.0.2"
     },
+    "notfloran/mjml-bundle": {
+        "version": "v2.1.0"
+    },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },

@@ -348,6 +348,11 @@ class Job
      */
     private $logoFile;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hash;
+
     public function setLogoFile(?File $logoFile = null):  void
     {
         $this->logoFile = $logoFile;
@@ -361,5 +366,17 @@ class Job
     public function getLogoFile(): ?File
     {
         return $this->logoFile;
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
+
+        return $this;
     }
 }

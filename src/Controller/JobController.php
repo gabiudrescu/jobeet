@@ -4,13 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Job;
+use App\EventSubscriber\EmailSubscriber;
 use App\Form\JobType;
+use App\Form\PublishType;
 use App\Repository\JobRepository;
 use Doctrine\ORM\Query\Expr;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,10 +31,15 @@ class JobController extends Controller
      * @var JobRepository
      */
     private $jobRepository;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
-    public function __construct(JobRepository $jobRepository)
+    public function __construct(JobRepository $jobRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->jobRepository = $jobRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -64,6 +73,24 @@ class JobController extends Controller
     }
 
     /**
+     * @Route("/preview/{token}", name="job_preview")
+     * @ParamConverter("job", options={"mapping": { "token":"token"}})
+     * @Method("GET")
+     */
+    public function preview(Job $job)
+    {
+        $publishForm = $this->createPublishForm($job);
+
+        $editForm = $this->createEditForm($job);
+
+        return $this->render('job/preview.html.twig', [
+            'job' => $job,
+            'publishForm' => $publishForm->createView(),
+            'editForm' => $editForm->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/job/new", name="job_new")
      * @Method({"GET","POST"})
      *
@@ -81,6 +108,47 @@ class JobController extends Controller
         if($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
+
+            $job->setActivated(false);
+
+            $em->persist($job);
+            $em->flush();
+
+            $this->eventDispatcher->dispatch(EmailSubscriber::SEND_JOB_PREVIEW_LINK, new GenericEvent($job));
+
+            return $this->redirectToRoute('job_preview', [
+                'token' => $job->getToken()
+            ]);
+        }
+
+        return $this->render('job/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/job/publish", name="job_publish")
+     * @Method({"GET","POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function publish(Request $request)
+    {
+        $data = $request->get('publish');
+        $token = $this->extractPublishFormData($data);
+        $job = $this->jobRepository->findOneBy(['token' => $token]);
+
+        $form = $this->createPublishForm($job);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            $job->setActivated(true);
+
             $em->persist($job);
             $em->flush();
 
@@ -94,7 +162,19 @@ class JobController extends Controller
 
         return $this->render('job/create.html.twig', [
             'form' => $form->createView()
-        ]);
+        ]);    }
+
+    /**
+     * @Route("/job/edit", name="job_edit")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function edit(Request $request)
+    {
+        die('edit works');
     }
 
     /**
@@ -130,5 +210,72 @@ class JobController extends Controller
         $form->add('submit', SubmitType::class);
 
         return $form;
+    }
+
+    /**
+     * @param Job $job
+     *
+     * @return FormInterface
+     */
+    private function createPublishForm(Job $job): FormInterface
+    {
+        $publishForm = $this->createForm(
+            PublishType::class,
+            ['job' => $job],
+            [
+                'action' => $this->generateUrl('job_publish'),
+                'method' => 'POST',
+            ]
+        );
+
+        $publishForm->add(
+            'publish',
+            SubmitType::class,
+            [
+                'label' => 'jobeet.job.publish'
+            ]
+        );
+
+        return $publishForm;
+}
+
+    /**
+     * @param Job $job
+     *
+     * @return FormInterface
+     */
+    private function createEditForm(Job $job): FormInterface
+    {
+        $editForm = $this->createForm(
+            PublishType::class,
+            ['job' => $job],
+            [
+                'action' => $this->generateUrl('job_edit'),
+                'method' => 'POST',
+            ]
+        );
+
+        $editForm->add(
+            'edit',
+            SubmitType::class,
+            [
+                'label' => 'jobeet.job.edit'
+            ]
+        );
+
+        return $editForm;
+}
+
+    /**
+     * @param $data
+     *
+     * @return string
+     */
+    private function extractPublishFormData(array $data)
+    {
+        Assert::keyExists($data, 'job');
+        Assert::string($data['job']);
+
+        return $data['job'];
     }
 }
