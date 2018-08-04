@@ -5,6 +5,11 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Job;
 use App\Form\JobType;
+use App\Repository\JobRepository;
+use Doctrine\ORM\Query\Expr;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -15,15 +20,32 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class JobController extends Controller
 {
+
     /**
-     * @Route("/{category}", name="job_category", requirements={"category" = "\d+"})
-     * @ParamConverter()
+     * @var JobRepository
+     */
+    private $jobRepository;
+
+    public function __construct(JobRepository $jobRepository)
+    {
+        $this->jobRepository = $jobRepository;
+    }
+
+    /**
+     * @Route("/jobs-for/{category}", name="job_category")
+     * @ParamConverter("category", options={"mapping": { "category":"slug"}})
      * @Method("GET")
      */
     public function index(Category $category)
     {
+        /**
+         * @var Pagerfanta $jobs
+         */
+        $jobs = $this->jobRepository->createPaginatorForJobsByCategory($category);
+
         return $this->render('job/index.html.twig', [
             'category' => $category,
+            'jobs' => $jobs,
         ]);
     }
 

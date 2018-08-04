@@ -4,5 +4,10 @@
 
 {% block main %}
     {% import 'jobs/macro/list.html.twig' as jobList %}
-    {{ jobList.render(category, category.jobs) }}
+
+    {{ jobList.render(category, jobs) }}
+
+    <div class="d-flex justify-content-center">
+        {{ pagerfanta(jobs, 'twitter_bootstrap4') }}
+    </div>
 {% endblock %}

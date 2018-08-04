@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Job;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -12,39 +12,25 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Job[]    findAll()
  * @method Job[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class JobRepository extends ServiceEntityRepository
+class JobRepository extends AbstractRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Job::class);
     }
 
-//    /**
-//     * @return Job[] Returns an array of Job objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function createPaginatorForJobsByCategory(Category $category)
     {
-        return $this->createQueryBuilder('j')
-            ->andWhere('j.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('j.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('j');
 
-    /*
-    public function findOneBySomeField($value): ?Job
-    {
-        return $this->createQueryBuilder('j')
-            ->andWhere('j.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $qb->where('j.category = :category')
+            ->setParameter('category', $category)
         ;
+
+        $qb->andWhere('j.expiresAt > :now')
+            ->setParameter('now', new \DateTime('now'))
+        ;
+
+        return $this->getPaginator($qb);
     }
-    */
 }

@@ -2,7 +2,12 @@
     {% block jumbotron %}
         <section class="jumbotron text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">{% block jumbotron_heading %}{{ category.name }}{% endblock jumbotron_heading %}</h1>
+                <h1 class="jumbotron-heading">
+                    {% block jumbotron_heading %}
+                        <a href="{{ path('job_category', {'category' : category.slug }) }}">{{ category.name }}</a>
+                    {% endblock jumbotron_heading %}
+                </h1>
+
                 {% block jumbotron_content %}
                     {{ category.description|raw }}
                 {% endblock jumbotron_content %}
