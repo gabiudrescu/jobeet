@@ -4,7 +4,16 @@ jobeet.header.description: __jobeet.header.description
 jobeet.header.title: Jobeet
 jobeet.job.list.title: __jobeet.job.list.title
 jobeet.job.create.title: __jobeet.job.create.title
-jobeet.job.expire_in: "This job expires"
-jobeet.job.expires_at: "This job expired at"
+jobeet.job.expire_in: 'This job expires'
+jobeet.job.expires_at: 'This job expired at'
 jobeet.job.search.header: 'Jobs with "%query%"'
-jobeet.email.new.from.email: 'gabriel.udr@gmail.com'
+jobeet.email.new.from.email: gabriel.udr@gmail.com
+jobeet.email.new.title: __jobeet.email.new.title
+jobeet.email.new.first_headline: __jobeet.email.new.first_headline
+jobeet.email.new.brand: __jobeet.email.new.brand
+jobeet.email.new.menu.homepage: __jobeet.email.new.menu.homepage
+jobeet.email.new.menu.new: __jobeet.email.new.menu.new
+jobeet.email.new.heading: __jobeet.email.new.heading
+jobeet.email.new.subheading: __jobeet.email.new.subheading
+jobeet.email.new.body_raw: __jobeet.email.new.body_raw
+jobeet.email.new.preview: __jobeet.email.new.preview

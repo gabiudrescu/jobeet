@@ -6,6 +6,12 @@
 parameters:
     env(LOCALE): 'ro'
     locale: '%env(resolve:LOCALE)%'
+    router.request_context.host: '%env(resolve:ROUTER_HOST)%'
+    router.request_context.scheme: '%env(resolve:ROUTER_SCHEME)%'
+#    router.request_context.base_url: '%env(resolve:ROUTER_PATH)%' to be used if there is a custom path for assets
+    router.request_context.port: '%env(resolve:ROUTER_PORT)%'
+    asset.request_context.base_path: '%router.request_context.base_url%'
+    asset.request_context.secure: false
 
 services:
     # default configuration for services in *this* file

@@ -48,6 +48,10 @@ services:
         - APP_ENV=dev
         - LOCALE=ro
         - APP_SECRET=2f506fc1c8fa44b9b34642d0fd46ebbf
+        - ROUTER_HOST=localhost:8000
+        - ROUTER_SCHEME=http
+        - ROUTER_PATH=/
+        - ROUTER_PORT=8000
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini

@@ -10,7 +10,6 @@ namespace App\EventSubscriber;
 
 
 use App\Entity\Job;
-use NotFloran\MjmlBundle\Mjml;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Templating\EngineInterface;
@@ -34,20 +33,14 @@ class EmailSubscriber implements EventSubscriberInterface
      */
     private $templateEngine;
 
-
-    private $mjml;
-
     public function __construct(
         \Swift_Mailer $mailer,
         TranslatorInterface $translator,
-        EngineInterface $templateEngine,
-        Mjml $mjml
-    )
-    {
+        EngineInterface $templateEngine
+    ) {
         $this->mailer = $mailer;
         $this->trans = $translator;
         $this->templateEngine = $templateEngine;
-        $this->mjml = $mjml;
     }
 
     const SEND_JOB_PREVIEW_LINK = 'send_job_preview_link';
@@ -72,15 +65,14 @@ class EmailSubscriber implements EventSubscriberInterface
             ->setFrom($this->trans('jobeet.email.new.from.email'), $this->trans('jobeet.email.new.from.name'))
             ->setTo($job->getEmail())
             ->setBody(
-                $this->mjml->render(
-                    $this->templateEngine->render('email/new/new.mjml.twig', [
+                $this->templateEngine->render(
+                    'email/new/new.mjml.twig',
+                    [
                         'job' => $job
-                    ])
+                    ]
                 ),
-                'text/html'
-            )
-        ;
-
+                'text/mjml'
+            );
         $this->mailer->send($message);
     }
 

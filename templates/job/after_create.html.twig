@@ -1,0 +1,5 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    {{ "jobeet.job.create.after"|trans({'%email%' : job.email}) }}
+{% endblock %}

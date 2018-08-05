@@ -1,13 +1,13 @@
-diff.ago.year: "{1}acum un an|]1, Inf[acum %count% ani"
-diff.ago.month: "{1}acum o luna|]1, Inf[acum %count% luni"
-diff.ago.day: "{1}acum o zi|]1, Inf[acum %count% zile"
-diff.ago.hour: "{1}acum o ora|]1, Inf[acum %count% ore"
-diff.ago.minute: "{1}acum un minut|]1, Inf[acum %count% minute"
-diff.ago.second: "{1}acum o secunda|]1, Inf[acum %count% secunde"
-diff.empty: "gol"
-diff.in.second: "{1}într-o secundă|]1, Inf[in %count% secunde"
-diff.in.hour: "{1}într-o oră|]1, Inf[in %count% ore"
-diff.in.minute: "{1}într-un minut|]1, Inf[in %count% minute"
-diff.in.day: "{1}într-o zi|]1, Inf[in %count% zile"
-diff.in.month: "{1}într-o lună|]1, Inf[in %count% luni"
-diff.in.year: "{1}într-un an|]1, Inf[in %count% ani"
+diff.ago.year: '{1}acum un an|]1, Inf[acum %count% ani'
+diff.ago.month: '{1}acum o luna|]1, Inf[acum %count% luni'
+diff.ago.day: '{1}acum o zi|]1, Inf[acum %count% zile'
+diff.ago.hour: '{1}acum o ora|]1, Inf[acum %count% ore'
+diff.ago.minute: '{1}acum un minut|]1, Inf[acum %count% minute'
+diff.ago.second: '{1}acum o secunda|]1, Inf[acum %count% secunde'
+diff.empty: gol
+diff.in.second: '{1}într-o secundă|]1, Inf[in %count% secunde'
+diff.in.hour: '{1}într-o oră|]1, Inf[in %count% ore'
+diff.in.minute: '{1}într-un minut|]1, Inf[in %count% minute'
+diff.in.day: '{1}într-o zi|]1, Inf[in %count% zile'
+diff.in.month: '{1}într-o lună|]1, Inf[in %count% luni'
+diff.in.year: '{1}într-un an|]1, Inf[in %count% ani'

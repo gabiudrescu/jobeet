@@ -116,13 +116,25 @@ class JobController extends Controller
 
             $this->eventDispatcher->dispatch(EmailSubscriber::SEND_JOB_PREVIEW_LINK, new GenericEvent($job));
 
-            return $this->redirectToRoute('job_preview', [
+            return $this->redirectToRoute('job_afterCreate', [
                 'token' => $job->getToken()
             ]);
         }
 
         return $this->render('job/create.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/afterCreate/{token}", name="job_afterCreate")
+     * @ParamConverter("job", options={"mapping": { "token":"token"}})
+     * @Method("GET")
+     */
+    public function afterCreate(Job $job)
+    {
+        return $this->render('job/after_create.html.twig', [
+            'job' => $job,
         ]);
     }
 

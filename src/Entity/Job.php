@@ -130,7 +130,7 @@ class Job
 
     public function __toString()
     {
-        return sprintf('%s - %s (RefId: %s)', $this->getCompany(), $this->getPosition(), $this->id);
+        return sprintf('%s - %s', $this->getCompany(), $this->getPosition());
     }
 
     public function getId()

@@ -23,4 +23,4 @@ yarn-error.log
 
 .idea
 /docker/.env
-/public/images/
+/public/images/upload/
