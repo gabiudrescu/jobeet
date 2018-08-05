@@ -379,4 +379,9 @@ class Job
 
         return $this;
     }
+
+    public function extendWithDays(int $days = 30)
+    {
+        $this->setExpiresAt(new \DateTime(sprintf('+%ddays', $days)));
+    }
 }

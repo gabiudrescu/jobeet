@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Job;
 use App\EventSubscriber\EmailSubscriber;
+use App\Form\JobEditType;
 use App\Form\JobType;
 use App\Form\PublishType;
 use App\Repository\JobRepository;
@@ -81,7 +82,7 @@ class JobController extends Controller
     {
         $publishForm = $this->createPublishForm($job);
 
-        $editForm = $this->createEditForm($job);
+        $editForm = $this->createGenerateEditForm($job);
 
         return $this->render('job/preview.html.twig', [
             'job' => $job,
@@ -148,9 +149,7 @@ class JobController extends Controller
      */
     public function publish(Request $request)
     {
-        $data = $request->get('publish');
-        $token = $this->extractPublishFormData($data);
-        $job = $this->jobRepository->findOneBy(['token' => $token]);
+        $job = $this->getJobFromRequestForm($request);
 
         $form = $this->createPublishForm($job);
         $form->handleRequest($request);
@@ -174,7 +173,22 @@ class JobController extends Controller
 
         return $this->render('job/create.html.twig', [
             'form' => $form->createView()
-        ]);    }
+        ]);
+    }
+
+    /**
+     * @Route("/generate_edit/{token}", name="job_generate_edit")
+     * @ParamConverter("job", options={"mapping": { "token":"token"}})
+     * @Method("GET")
+     */
+    public function generateEditEmail(Job $job)
+    {
+        $this->eventDispatcher->dispatch(EmailSubscriber::SEND_JOB_EDIT_LINK, new GenericEvent($job));
+
+        return $this->redirectToRoute('job_afterCreate', [
+            'token' => $job->getToken()
+        ]);
+    }
 
     /**
      * @Route("/job/edit", name="job_edit")
@@ -186,7 +200,50 @@ class JobController extends Controller
      */
     public function edit(Request $request)
     {
-        die('edit works');
+        $job = $this->getJobFromRequestForm($request);
+
+        $form = $this->createJobEditForm($job);
+
+        return $this->render('job/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/job/handle_edit/{token}", name="job_handle_edit")
+     * @ParamConverter("job", options={"mapping": { "token":"token"}})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function handleEdit(Job $job, Request $request)
+    {
+        $form = $this->createJobEditForm($job);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            if(true === $form->get('extend')->getData())
+            {
+                $job->extendWithDays(30);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('job_show', [
+                'id' => $job->getId(),
+                'company' => $job->getCompanySlug(),
+                'location' => $job->getLocationSlug(),
+                'position' => $job->getPositionSlug(),
+            ]);
+        }
+
+        return $this->render('job/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -256,7 +313,7 @@ class JobController extends Controller
      *
      * @return FormInterface
      */
-    private function createEditForm(Job $job): FormInterface
+    private function createGenerateEditForm(Job $job): FormInterface
     {
         $editForm = $this->createForm(
             PublishType::class,
@@ -276,18 +333,47 @@ class JobController extends Controller
         );
 
         return $editForm;
-}
+    }
 
     /**
-     * @param $data
+     * @param Job $job
      *
-     * @return string
+     * @return FormInterface
      */
-    private function extractPublishFormData(array $data)
+    private function createJobEditForm(Job $job): FormInterface
     {
+        $editForm = $this->createForm(JobEditType::class, $job, [
+                'action' => $this->generateUrl('job_handle_edit', ['token' => $job->getToken()]),
+                'method' => 'POST',
+            ]
+        );
+
+        $editForm->add(
+            'submit',
+            SubmitType::class,
+            [
+                'label' => 'jobeet.job.save'
+            ]
+        );
+
+        return $editForm;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Job|null
+     */
+    private function getJobFromRequestForm(Request $request)
+    {
+        $data = $request->get('publish');
+
+        Assert::isArray($data);
         Assert::keyExists($data, 'job');
         Assert::string($data['job']);
 
-        return $data['job'];
+        $token = $data['job'];
+
+        return $this->jobRepository->findOneBy(['token' => $token]);
     }
 }

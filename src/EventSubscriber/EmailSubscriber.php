@@ -45,13 +45,40 @@ class EmailSubscriber implements EventSubscriberInterface
 
     const SEND_JOB_PREVIEW_LINK = 'send_job_preview_link';
 
+    const SEND_JOB_EDIT_LINK = 'send_EDIT_link';
+
     public static function getSubscribedEvents()
     {
         return [
             self::SEND_JOB_PREVIEW_LINK => [
                 'sendJobPreviewLink'
+            ],
+            self::SEND_JOB_EDIT_LINK => [
+                'sendJobEditLink'
             ]
         ];
+    }
+
+    public function sendJobEditLink(GenericEvent $event)
+    {
+        /**
+         * @var Job $job
+         */
+        $job = $event->getSubject();
+
+        $message = (new \Swift_Message($this->trans('jobeet.email.edit.subject')))
+            ->setFrom($this->trans('jobeet.email.edit.from.email'), $this->trans('jobeet.email.edit.from.name'))
+            ->setTo($job->getEmail())
+            ->setBody(
+                $this->templateEngine->render(
+                    'email/edit/edit.mjml.twig',
+                    [
+                        'job' => $job
+                    ]
+                ),
+                'text/mjml'
+            );
+        $this->mailer->send($message);
     }
 
     public function sendJobPreviewLink(GenericEvent $event)

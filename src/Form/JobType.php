@@ -28,7 +28,9 @@ class JobType extends AbstractType
                 'placeholder' => 'jobeet.category'
             ])
             ->add('company')
-            ->add('logoFile', VichImageType::class)
+            ->add('logoFile', VichImageType::class, [
+                'required' => false,
+            ])
             ->add('url', UrlType::class)
             ->add('position')
             ->add('location')
