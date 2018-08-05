@@ -145,4 +145,15 @@ abstract class AbstractRepository extends BaseEntityRepository
 
         return $name;
     }
+
+    public function persist(object $object)
+    {
+        $this->_em->persist($object);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+        $this->_em->clear();
+    }
 }

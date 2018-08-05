@@ -17,7 +17,11 @@ class HomepageController extends Controller
         /**
          * @var Category[] $categories
          */
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findCategoriesWithJobsForHomepage();
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
+        array_walk($categories, function (Category $category){
+            $category->setJobs($this->getDoctrine()->getRepository(Job::class)->findJobsForCategory($category));
+        });
 
         return $this->render('homepage/index.html.twig', [
             'categories' => $categories

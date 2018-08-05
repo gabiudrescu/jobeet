@@ -1,5 +1,5 @@
 App\Entity\Job:
-    future_jobs_{1..5}:
+    future_jobs_{1..500}:
         category: '@category*'
         type: <randomElement(['full-time','part-time','freelance'])>
         company: <randomElement(['BestValue','StudentTenant.com','WiseSystems'])>
@@ -12,7 +12,7 @@ App\Entity\Job:
         public: true
         activated: true
         email: <email()>
-        expires_at: <dateTimeBetween('+1 days', '+30 days')>
+        expires_at: <dateTimeBetween('+1 days', '+10 days')>
     expired_jobs_{1..5}:
         category: '@category*'
         type: <randomElement(['full-time','part-time','freelance'])>

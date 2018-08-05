@@ -106,6 +106,18 @@ class Category
         return $this;
     }
 
+    public function setJobs(iterable $jobs): self
+    {
+        if(!$jobs instanceof ArrayCollection)
+        {
+            $jobs = new ArrayCollection($jobs);
+        }
+
+        $this->jobs = $jobs;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Affiliate[]
      */

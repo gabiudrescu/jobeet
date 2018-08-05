@@ -57,4 +57,47 @@ class JobRepository extends AbstractRepository
             ->setParameter('now', new \DateTime('now'))
         ;
     }
+
+    public function findJobsForCategory(Category $category, int $limit = 6)
+    {
+        $qb = $this->createQueryBuilder('j');
+
+        $qb->select('j, c')
+            ->join('j.category', 'c', 'with', 'j.category = :category')
+            ->setParameter('category', $category)
+            ->setMaxResults($limit);
+        ;
+
+        $this->setActiveJobs($qb);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findCategoriesWithJobsForHomepage()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c, j')
+            ->join('c.jobs', 'j', 'with', 'j.expiresAt > :now')
+            ->setParameter('now', new \DateTime('now'))
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findJobsExpiringIn(int $days)
+    {
+        $qb = $this->createQueryBuilder('j');
+
+        $qb->where('j.expiresAt between :today and :ndays')
+            ->setParameter('today', new \DateTime('now'))
+            ->setParameter('ndays', new \DateTime(sprintf('+%ddays', $days)))
+        ;
+
+        foreach ($qb->getQuery()->iterate() as $result)
+        {
+            yield $result[0];
+
+            $this->_em->clear();
+        }
+    }
 }
