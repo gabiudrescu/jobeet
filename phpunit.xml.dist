@@ -8,4 +8,7 @@
          failOnRisky="true"
          failOnWarning="true"
 >
+    <testsuite name='Unit tests'>
+        <directory suffix='.php'>./tests/UnitTest</directory>
+    </testsuite>
 </phpunit>

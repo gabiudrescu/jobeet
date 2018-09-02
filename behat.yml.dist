@@ -1,0 +1,22 @@
+default:
+    autoload:
+        - '%paths.base%/tests/Bootstrap'
+    suites:
+        default:
+            paths:
+                - '%paths.base%/tests/Features'
+            contexts:
+                - App\Tests\Context\HomepageContext
+                - App\Tests\Context\GeneralContext
+                - Behat\MinkExtension\Context\MinkContext
+
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: tests/Bootstrap/bootstrap.php
+                class: App\Kernel
+        Behat\MinkExtension:
+            base_url: "http://jobeet.localhost/"
+            sessions:
+                default:
+                    symfony2: ~
