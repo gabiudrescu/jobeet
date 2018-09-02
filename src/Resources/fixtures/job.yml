@@ -1,9 +1,9 @@
 App\Entity\Job:
-    future_jobs_{1..500}:
+    future_jobs_{1..50}:
         category: '@category*'
         type: <randomElement(['full-time','part-time','freelance'])>
         company: <randomElement(['BestValue','StudentTenant.com','WiseSystems'])>
-        logo: <randomElement(['https://www.studenttenant.com/bundles/jakutast/images/header/st-logo.png','https://cdn.vox-cdn.com/thumbor/8tLchaDMIEDNzUD3mYQ7v1ZQL84=/0x0:2012x1341/920x613/filters:focal(0x0:2012x1341):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/47070706/google2.0.0.jpg','https://storage.googleapis.com/bveu-blog/2018/02/9ede63f6-logo-bestvalue-eu.jpg'])>
+        logo: 'https://via.placeholder.com/350x150'
         url: <randomElement(['https://www.google.ro','https://www.studenttenant.com','https://www.symfony.com'])>
         position: <randomElement(['Programmer','Administrator','Web Designer','Front-end Developer','Product Owner'])>
         location: <Address()>
@@ -17,7 +17,7 @@ App\Entity\Job:
         category: '@category*'
         type: <randomElement(['full-time','part-time','freelance'])>
         company: <randomElement(['BestValue','StudentTenant.com','WiseSystems'])>
-        logo: <randomElement(['https://www.studenttenant.com/bundles/jakutast/images/header/st-logo.png','https://cdn.vox-cdn.com/thumbor/8tLchaDMIEDNzUD3mYQ7v1ZQL84=/0x0:2012x1341/920x613/filters:focal(0x0:2012x1341):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/47070706/google2.0.0.jpg','https://storage.googleapis.com/bveu-blog/2018/02/9ede63f6-logo-bestvalue-eu.jpg'])>
+        logo: 'https://via.placeholder.com/350x150'
         url: <randomElement(['https://www.google.ro','https://www.studenttenant.com','https://www.symfony.com'])>
         position: <randomElement(['Programmer','Administrator','Web Designer','Front-end Developer','Product Owner'])>
         location: <Address()>

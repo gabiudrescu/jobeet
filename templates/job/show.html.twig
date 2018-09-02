@@ -3,39 +3,117 @@
 {% block title %}{{ 'jobeet.job.list.title'|trans }}{% endblock %}
 
 {% block main %}
-    <div id="job">
-        <h1>{{ job.company }}</h1>
-        <h2>{{ job.location }}</h2>
-        <h3>
-            {{ job.position }}
-            <small> - {{ job.type }}</small>
-        </h3>
+    <div class="container">
 
-        {% if job.logo %}
-            <div class="logo">
-                <a href="{{ job.url }}">
-                    <img src="{{ job.logo|displayLogoPath }}"
-                         alt="{{ job.company }} logo" width="200px" />
-                </a>
+        <div class="row">
+
+            {% block content %}
+            <!-- Post Content Column -->
+            <div class="col-lg-8">
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Title -->
+                        <h1 class="mt-4">{{ job.position }}</h1>
+
+                        <!-- Author -->
+                        <p class="lead">
+                            {{ 'jobeet.job.show.job_at'|trans(
+                                {
+                                    '%category%': job.category,
+                                    '%company%': job.company,
+                                    '%location%': job.location,
+                                }
+                            ) }}
+                        </p>
+                        <p>{{ job.expiresAt > date() ? 'jobeet.job.expire_in'|trans : 'jobeet.job.expires_at'|trans }} {{ job.expiresAt | time_diff }}</p>
+                    </div>
+                    <div class="col-lg-4 mt-4">
+                        <!-- Preview Image -->
+                        <img class="img-fluid rounded" src="{{ job.logo|displayLogoPath }}" alt="">
+
+                    </div>
+                </div>
+
+                <hr>
+
+
+                <div class="content">
+                    {{ job.description|raw }}
+                </div>
+
+                <div class="card card-outline-secondary my-4">
+                    <div class="card-header">
+                        {{ 'jobeet.job.show.how_to_apply'|trans }}
+                    </div>
+                    <div class="card-body">
+                        {{ job.howToApply|raw }}
+                    </div>
+                </div>
+                <!-- /.card -->
+
+                <hr>
             </div>
-        {% endif %}
 
-        <div class="description">
-            {{ job.description|raw }}
+            {% endblock content %}
+
+            {% block sidebar %}
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                {% block edit %}
+                <div class="card my-4">
+                    <h5 class="card-header">Admin</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <a href="{{ path('job_generate_edit', { 'token': job.token }) }}" class="btn btn-secondary">{{ 'action.edit'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+                {% endblock edit %}
+
+
+                {% block search %}
+                <!-- Search Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">{{ 'jobeet.job.sidebar.search'|trans }}</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{ 'jobeet.job.sidebar.search_placeholder'|trans }}">
+                            <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">{{ 'jobeet.job.sidebar.search_button'|trans }}</button>
+                </span>
+                        </div>
+                    </div>
+                </div>
+                {% endblock search %}
+
+                {% block categories %}
+                <!-- Categories Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">{{ 'jobeet.job.sidebar.categories'|trans }}</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    {% for category in categories %}
+                                    <li>
+                                        <a href="{{ category.slug }}">{{ category.name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock categories %}
+
+            </div>
+            {% endblock sidebar %}
+
         </div>
+        <!-- /.row -->
 
-        <h4>How to apply?</h4>
-
-        <p class="how_to_apply">{{ job.howtoapply|raw }}</p>
-
-        <div class="meta">
-            <small>posted on {{ job.createdat|date('m/d/Y') }}</small>
-        </div>
-
-        <div style="padding: 20px 0">
-            <a href="{{ path('job_generate_edit', { 'token': job.token }) }}">
-                Edit
-            </a>
-        </div>
     </div>
+    <!-- /.container -->
 {% endblock %}

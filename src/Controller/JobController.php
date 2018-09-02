@@ -68,8 +68,11 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
         return $this->render('job/show.html.twig', [
             'job' => $job,
+            'categories' => $categories,
         ]);
     }
 
@@ -128,18 +131,6 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/afterCreate/{token}", name="job_afterCreate")
-     * @ParamConverter("job", options={"mapping": { "token":"token"}})
-     * @Method("GET")
-     */
-    public function afterCreate(Job $job)
-    {
-        return $this->render('job/after_create.html.twig', [
-            'job' => $job,
-        ]);
-    }
-
-    /**
      * @Route("/job/publish", name="job_publish")
      * @Method({"GET","POST"})
      *
@@ -185,8 +176,17 @@ class JobController extends Controller
     {
         $this->eventDispatcher->dispatch(EmailSubscriber::SEND_JOB_EDIT_LINK, new GenericEvent($job));
 
-        return $this->redirectToRoute('job_afterCreate', [
-            'token' => $job->getToken()
+        $flash = $this->get('translator')->trans('jobeet.job.create.after',[
+            '%email%' =>  $job->getEmail(),
+        ]);
+
+        $this->get('session')->getFlashBag()->add('success', $flash);
+
+        return $this->redirectToRoute('job_show', [
+            'id' => $job->getId(),
+            'company' => $job->getCompanySlug(),
+            'location' => $job->getLocationSlug(),
+            'position'=> $job->getPositionSlug(),
         ]);
     }
 
