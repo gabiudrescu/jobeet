@@ -7,5 +7,4 @@ Feature:
     Given fixtures were generated
 
   Scenario: I should see categories with active jobs on the homepage
-    Given I am on homepage
-    Then I should see 4 "h1.category" elements
+    Given I open the homepage
