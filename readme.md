@@ -134,3 +134,5 @@ object caching + http cache + invalidation
 Inspired by https://medium.com/@dragosholban/symfony-2-8-jobeet-tutorial-3a72f67cdbd8;
 
 original tutorial: https://symfony.com/blog/jobeet-day-1-starting-up-the-project
+
+revive the project
